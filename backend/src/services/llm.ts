@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import prompt from "../utils/prompt.txt";
 
 const openai = new OpenAI({
-  apiKey: "YOUR_API_KEY",
+  apiKey: "",
 });
 
 export interface Message {
