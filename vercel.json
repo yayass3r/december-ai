@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd frontend && bun install && bun run build",
+  "outputDirectory": "frontend/.next",
+  "framework": "nextjs",
+  "regions": ["sin1"],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://december-backend.onrender.com"
+  }
+}

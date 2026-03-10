@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════════════════════
+# 🎨 RENDER DEPLOYMENT CONFIG
+# Free tier: 750 hours/month
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # ───────────────────────────────────────────────────────────────
+  # Backend Service
+  # ───────────────────────────────────────────────────────────────
+  - type: web
+    name: december-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    healthCheckPath: /containers
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+
+  # ───────────────────────────────────────────────────────────────
+  # Frontend Service (Static Site)
+  # ───────────────────────────────────────────────────────────────
+  - type: web
+    name: december-frontend
+    runtime: static
+    buildCommand: cd frontend && bun install && bun run build
+    staticPublishPath: ./frontend/.next
+    plan: free
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://december-backend.onrender.com

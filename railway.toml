@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════════════════════════
+# 🚂 RAILWAY DEPLOYMENT CONFIG
+# Free tier: $5 credit/month
+# ═══════════════════════════════════════════════════════════════
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
+
+[deploy]
+startCommand = "bun run src/index.ts"
+healthcheckPath = "/containers"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[[services]]
+name = "december-backend"
+
+[services.variables]
+NODE_ENV = "production"
+PORT = "4000"

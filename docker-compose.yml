@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════
+# 🐳 DOCKER COMPOSE - DECEMBER AI
+# For local development and testing
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # ───────────────────────────────────────────────────────────────
+  # Backend Service
+  # ───────────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/containers"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ───────────────────────────────────────────────────────────────
+  # Frontend Service (Development)
+  # ───────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────────────────────────
+# Networks
+# ─────────────────────────────────────────────────────────────────
+networks:
+  december-network:
+    driver: bridge
