@@ -1,11 +1,14 @@
 # ═══════════════════════════════════════════════════════════════
 # 🐳 DECEMBER BACKEND - DOCKERFILE
-# Optimized for Railway, Render, Fly.io
+# Optimized for Render deployment
 # ═══════════════════════════════════════════════════════════════
 
-FROM oven/bun:1
+FROM oven/bun:1-alpine
 
 WORKDIR /app
+
+# Install curl for health checks
+RUN apk add --no-cache curl
 
 # Copy package files first
 COPY package.json bun.lock* ./
@@ -24,9 +27,5 @@ ENV PORT=4000
 # Expose port
 EXPOSE 4000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:4000/containers || exit 1
-
-# Start the server
+# Start the server directly with bun
 CMD ["bun", "run", "src/index.ts"]
