@@ -30,13 +30,15 @@ export const config = {
 // } as const;
 
 // ═══════════════════════════════════════════════════════════════
-// 3️⃣ CHAT.Z.AI - Custom Provider 🤖
+// 3️⃣ Z.AI (Zhipu AI) - GLM Models! 🤖
+// Get your key: https://z.ai/manage-apikey/apikey-list
+// Models: GLM-4.7-Flash, GLM-4.6, GLM-5
 // ═══════════════════════════════════════════════════════════════
 // export const config = {
 //   aiSdk: {
-//     baseUrl: process.env.ZAI_BASE_URL || "https://chat.z.ai/api/v1",
+//     baseUrl: "https://open.bigmodel.cn/api/paas/v4",
 //     apiKey: process.env.ZAI_API_KEY || "",
-//     model: "gpt-4",
+//     model: "glm-4-flash", // أو "glm-4-plus" أو "glm-4"
 //     temperature: 0.7,
 //   },
 // } as const;
