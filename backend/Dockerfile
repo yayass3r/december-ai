@@ -3,32 +3,23 @@
 # Optimized for Railway, Render, Fly.io
 # ═══════════════════════════════════════════════════════════════
 
-FROM oven/bun:1 AS base
+FROM oven/bun:1
+
 WORKDIR /app
 
-# ─────────────────────────────────────────────────────────────────
-# Install dependencies
-# ─────────────────────────────────────────────────────────────────
-FROM base AS deps
+# Copy package files first
 COPY package.json bun.lock* ./
+
+# Install dependencies
+RUN bun install --frozen-lockfile || bun install
+
+# Copy source code and config
 COPY src ./src
 COPY config.ts ./
-RUN bun install --frozen-lockfile
 
-# ─────────────────────────────────────────────────────────────────
-# Production image
-# ─────────────────────────────────────────────────────────────────
-FROM base AS runner
-WORKDIR /app
-
+# Environment variables
 ENV NODE_ENV=production
 ENV PORT=4000
-
-# Copy necessary files
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/src ./src
-COPY --from=deps /app/config.ts ./
-COPY package.json ./
 
 # Expose port
 EXPOSE 4000

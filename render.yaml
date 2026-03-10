@@ -8,30 +8,22 @@ services:
   # Backend Service
   # ───────────────────────────────────────────────────────────────
   - type: web
-    name: december-backend
+    name: december-ai-backend
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     plan: free
+    region: oregon
     healthCheckPath: /containers
+    branch: main
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 4000
+        value: "4000"
       - key: GROQ_API_KEY
         sync: false
       - key: OPENROUTER_API_KEY
         sync: false
-
-  # ───────────────────────────────────────────────────────────────
-  # Frontend Service (Static Site)
-  # ───────────────────────────────────────────────────────────────
-  - type: web
-    name: december-frontend
-    runtime: static
-    buildCommand: cd frontend && bun install && bun run build
-    staticPublishPath: ./frontend/.next
-    plan: free
-    envVars:
-      - key: NEXT_PUBLIC_API_URL
-        value: https://december-backend.onrender.com
+      - key: ZAI_API_KEY
+        sync: false
